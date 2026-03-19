@@ -7,7 +7,7 @@ pydantic-settings==2.1.0
 
 # Database & Auth
 supabase==2.3.4
-httpx==0.26.0
+httpx==0.25.2
 
 # Stripe
 stripe==8.4.0
