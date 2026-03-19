@@ -7,6 +7,9 @@ export function createClient() {
   )
 }
 
+// Singleton client for client-side use
+export const supabase = createClient()
+
 // Type definitions for Supabase tables
 export type Json =
   | string

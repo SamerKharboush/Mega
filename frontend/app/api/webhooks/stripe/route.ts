@@ -2,17 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-})
+// Lazy-initialize clients to avoid build-time errors
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) throw new Error('STRIPE_SECRET_KEY not configured')
+  return new Stripe(key, { apiVersion: '2023-10-16' })
+}
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('Supabase not configured')
+  return createClient(url, key)
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const stripe = getStripe()
+    const supabase = getSupabase()
+
     const body = await request.text()
     const signature = request.headers.get('stripe-signature')
 
@@ -42,7 +50,6 @@ export async function POST(request: NextRequest) {
         const subscriptionId = session.subscription as string
 
         if (userId) {
-          // Update subscription record
           await supabase.from('subscriptions').upsert({
             user_id: userId,
             stripe_customer_id: customerId,
@@ -61,7 +68,6 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
 
-        // Get user by customer ID
         const { data: sub } = await supabase
           .from('subscriptions')
           .select('user_id')
@@ -69,13 +75,11 @@ export async function POST(request: NextRequest) {
           .single()
 
         if (sub) {
-          // Update subscription status
           const plan = subscription.status === 'active' ? 'pro' : 'free'
           await supabase
             .from('subscriptions')
             .update({
               plan,
-              status: subscription.status,
               current_period_end: new Date(
                 subscription.current_period_end * 1000
               ).toISOString(),
@@ -89,7 +93,6 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
 
-        // Downgrade to free plan
         await supabase
           .from('subscriptions')
           .update({
@@ -105,7 +108,6 @@ export async function POST(request: NextRequest) {
         const invoice = event.data.object as Stripe.Invoice
         const customerId = invoice.customer as string
 
-        // Reset usage for new billing period
         if (invoice.billing_reason === 'subscription_cycle') {
           await supabase
             .from('subscriptions')
@@ -114,16 +116,6 @@ export async function POST(request: NextRequest) {
             })
             .eq('stripe_customer_id', customerId)
         }
-        break
-      }
-
-      case 'invoice.payment_failed': {
-        const invoice = event.data.object as Stripe.Invoice
-        const customerId = invoice.customer as string
-
-        // Log payment failure
-        console.error('Payment failed for customer:', customerId)
-        // Could send notification email here
         break
       }
 

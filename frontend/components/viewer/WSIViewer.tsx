@@ -9,7 +9,7 @@ import {
   Move,
   Home,
   Layers,
-  FullScreen,
+  Maximize,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -182,7 +182,7 @@ export default function WSIViewer({
           }
         }}
       >
-        <FullScreen className="w-4 h-4" />
+        <Maximize className="w-4 h-4" />
       </Button>
     </div>
   )

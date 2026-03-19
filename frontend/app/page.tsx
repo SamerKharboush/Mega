@@ -7,8 +7,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import {
   Microscope,
   Dna,
-  Map,
-  Hospital,
+  MapPin,
+  Building2,
   BarChart3,
   Shield,
   Github,
@@ -84,12 +84,12 @@ const features = [
     description: 'EGFR, KRAS, TP53 predictions directly from H&E slides—no sequencing required.',
   },
   {
-    icon: Map,
+    icon: MapPin,
     title: 'Attention Heatmaps',
     description: 'Visualize exactly where the model focuses on your slide for interpretability.',
   },
   {
-    icon: Hospital,
+    icon: Building2,
     title: 'IHC Quantification',
     description: 'HER2, Ki-67, PD-L1 automated scoring. Consistent results, every time.',
   },
