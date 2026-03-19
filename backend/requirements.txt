@@ -1,19 +1,19 @@
 # FastAPI
-fastapi==0.110.0
-uvicorn[standard]==0.27.1
-python-multipart==0.0.9
-pydantic==2.6.1
-pydantic-settings==2.2.1
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.12
+pydantic==2.10.0
+pydantic-settings==2.6.0
 
 # Database & Auth
-supabase==2.3.4
-httpx==0.26.0
+supabase==2.10.0
+httpx==0.28.0
 
 # Stripe
-stripe==8.4.0
+stripe==11.2.0
 
 # PDF Generation
-reportlab==4.0.8
+reportlab==4.2.5
 
 # Monitoring
-sentry-sdk[fastapi]==1.40.0
+sentry-sdk[fastapi]==2.18.0

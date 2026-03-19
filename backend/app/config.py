@@ -5,13 +5,13 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # App
-    app_name: str = "PathAI Studio API"
-    debug: bool = False
-    api_secret_key: str
+    app_name: str = "Mega API"
+    debug: bool = True
+    api_secret_key: str = "dev-secret-key"
 
     # Supabase
-    supabase_url: str
-    supabase_service_role_key: str
+    supabase_url: str = "https://placeholder.supabase.co"
+    supabase_service_role_key: str = "placeholder"
 
     # Database
     database_url: Optional[str] = None
@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 
 @lru_cache()

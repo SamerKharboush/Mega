@@ -42,6 +42,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://pathai-studio.vercel.app",
+        "https://frontend-one-pink-50.vercel.app",
+        "https://mega-wdvv.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -56,6 +58,12 @@ async def global_exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={"detail": "Internal server error"},
     )
+
+
+# Root endpoint
+@app.get("/")
+async def root():
+    return {"message": "Mega API", "docs": "/docs", "health": "/health"}
 
 
 # Health check
