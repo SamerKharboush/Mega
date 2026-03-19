@@ -2,14 +2,14 @@
 
 > AI-powered digital pathology platform built on GigaPath + UNI 2 foundation models.
 
-![PathAI Studio](https://img.shields.io/badge/PathAI-Studio-14B8A6)
+![Mega](https://img.shields.io/badge/Mega-Digital%20Pathology-14B8A6)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## Overview
 
-PathAI Studio is a web-based SaaS platform where pathologists can:
+Mega is a web-based SaaS platform where pathologists can:
 
 - Upload whole-slide images (WSI) in SVS, NDPI, TIFF, MRXS, or SCN formats
 - Run AI analysis powered by Microsoft GigaPath and Harvard UNI 2 foundation models
@@ -38,7 +38,7 @@ PathAI Studio is a web-based SaaS platform where pathologists can:
 | GPU | Modal.com serverless |
 | ML Models | GigaPath + UNI 2 (HuggingFace) |
 | Payments | Stripe (metered + seats) |
-| Deploy | Vercel (frontend) + Fly.io (backend) |
+| Deploy | Vercel (frontend) + Railway (backend) |
 
 ## Quick Start
 
@@ -53,8 +53,8 @@ PathAI Studio is a web-based SaaS platform where pathologists can:
 1. **Clone and install**
 
 ```bash
-git clone https://github.com/yourname/pathai-studio
-cd pathai-studio
+git clone https://github.com/SamerKharboush/Mega
+cd Mega
 ```
 
 2. **Start local services**
@@ -89,7 +89,7 @@ Execute the SQL schema in `BLUEPRINT.md` in your Supabase SQL editor.
 ## Project Structure
 
 ```
-pathai-studio/
+Mega/
 ├── frontend/               # Next.js 14 App
 │   ├── app/               # App Router pages
 │   ├── components/        # React components
@@ -126,14 +126,40 @@ cd backend && pytest
 ### Frontend (Vercel)
 
 1. Connect your GitHub repo to Vercel
-2. Set environment variables
+2. Set environment variables (see below)
 3. Deploy on push to `main`
 
-### Backend (Fly.io)
+### Backend (Railway)
 
-1. Install Fly CLI: `curl -L https://fly.io/install.sh | sh`
-2. Login: `fly auth login`
-3. Deploy: `fly deploy`
+1. Connect your GitHub repo to Railway
+2. Set root directory to `backend`
+3. Set environment variables
+4. Deploy on push to `main`
+
+## Environment Variables
+
+### Frontend (Vercel)
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+NEXT_PUBLIC_API_URL=https://mega-production-d392.up.railway.app
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+HUGGINGFACE_TOKEN=your_hf_token
+```
+
+### Backend (Railway)
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+HUGGINGFACE_TOKEN=your_hf_token
+```
 
 ## Pricing
 

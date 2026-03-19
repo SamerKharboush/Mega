@@ -19,18 +19,18 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'PathAI Studio — AI Digital Pathology Platform',
+  title: 'Mega — AI Digital Pathology Platform',
   description: 'Upload whole-slide images and get AI-powered cancer subtype predictions, mutation scores, and attention heatmaps. Powered by GigaPath and UNI 2 foundation models.',
   keywords: ['digital pathology', 'AI pathology', 'GigaPath', 'UNI 2', 'whole-slide imaging', 'cancer detection'],
-  authors: [{ name: 'PathAI Studio' }],
+  authors: [{ name: 'Mega' }],
   openGraph: {
-    title: 'PathAI Studio — AI Digital Pathology Platform',
+    title: 'Mega — AI Digital Pathology Platform',
     description: 'Professional AI pathology analysis powered by Microsoft GigaPath and Harvard UNI 2.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PathAI Studio — AI Digital Pathology Platform',
+    title: 'Mega — AI Digital Pathology Platform',
     description: 'Upload whole-slide images and get AI-powered cancer subtype predictions.',
   },
 }

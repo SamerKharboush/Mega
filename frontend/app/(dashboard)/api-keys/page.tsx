@@ -37,7 +37,7 @@ export default function ApiKeysPage() {
       {/* Header */}
       <div>
         <h2 className="font-serif text-2xl">API Keys</h2>
-        <p className="text-cream/60 mt-1">Manage API keys for programmatic access to PathAI Studio</p>
+        <p className="text-cream/60 mt-1">Manage API keys for programmatic access to Mega</p>
       </div>
 
       {/* Warning */}
@@ -59,7 +59,7 @@ export default function ApiKeysPage() {
         <CardHeader>
           <CardTitle className="text-lg">Create New API Key</CardTitle>
           <CardDescription>
-            Generate a new API key for accessing the PathAI Studio REST API
+            Generate a new API key for accessing the Mega REST API
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -132,7 +132,7 @@ export default function ApiKeysPage() {
           <div>
             <h3 className="font-medium">API Documentation</h3>
             <p className="text-sm text-cream/60 mt-1">
-              Learn how to integrate PathAI Studio into your workflows
+              Learn how to integrate Mega into your workflows
             </p>
           </div>
           <Button variant="outline">

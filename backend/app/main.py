@@ -77,6 +77,7 @@ app.add_middleware(
         "https://pathai-studio.vercel.app",
         "https://frontend-one-pink-50.vercel.app",
         "https://mega-wdvv.onrender.com",
+        "https://mega-production-d392.up.railway.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

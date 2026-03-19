@@ -64,7 +64,7 @@ export default function DashboardLayout({
               <Microscope className="w-5 h-5 text-charcoal" />
             </div>
             {!sidebarCollapsed && (
-              <span className="font-serif text-lg">PathAI Studio</span>
+              <span className="font-serif text-lg">Mega</span>
             )}
           </Link>
         </div>
@@ -173,7 +173,7 @@ export default function DashboardLayout({
         <header className="h-16 border-b border-border bg-charcoal/50 backdrop-blur-sm sticky top-0 z-40">
           <div className="h-full px-6 flex items-center justify-between">
             <h1 className="font-serif text-xl">
-              {navigation.find(n => pathname.startsWith(n.href))?.name || 'PathAI Studio'}
+              {navigation.find(n => pathname.startsWith(n.href))?.name || 'Mega'}
             </h1>
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" className="relative">

@@ -208,11 +208,11 @@ export default function LandingPage() {
               <div className="w-8 h-8 rounded-lg bg-teal flex items-center justify-center">
                 <Microscope className="w-5 h-5 text-charcoal" />
               </div>
-              <span className="font-serif text-xl">PathAI Studio</span>
+              <span className="font-serif text-xl">Mega</span>
             </Link>
             <div className="flex items-center gap-4">
               <a
-                href="https://github.com/pathai-studio"
+                href="https://github.com/SamerKharboush/Mega"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-cream/70 hover:text-cream transition-colors flex items-center gap-2"
@@ -520,14 +520,14 @@ export default function LandingPage() {
           </p>
 
           <a
-            href="https://github.com/pathai-studio"
+            href="https://github.com/SamerKharboush/Mega"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-charcoal-50 border border-border rounded-lg px-6 py-3 hover:border-teal/30 transition-colors"
           >
             <Github className="w-6 h-6" />
             <div className="text-left">
-              <div className="font-medium">pathai-studio</div>
+              <div className="font-medium">SamerKharboush/Mega</div>
               <div className="text-sm text-cream/60">
                 <span className="text-teal">⭐ {starCount.toLocaleString()}</span> stars
               </div>
@@ -546,7 +546,7 @@ export default function LandingPage() {
                 <div className="w-8 h-8 rounded-lg bg-teal flex items-center justify-center">
                   <Microscope className="w-5 h-5 text-charcoal" />
                 </div>
-                <span className="font-serif text-xl">PathAI Studio</span>
+                <span className="font-serif text-xl">Mega</span>
               </div>
               <p className="text-cream/60 text-sm">
                 AI-powered digital pathology for the modern lab.
@@ -583,7 +583,7 @@ export default function LandingPage() {
 
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-cream/40">
-              PathAI Studio. Built in Tradate, Italy 🇮🇹
+              Mega. Built in Tradate, Italy 🇮🇹
             </p>
             <p className="text-sm text-cream/40">
               Open-source · GDPR Compliant · HIPAA Ready

@@ -97,7 +97,7 @@ function LoginForm() {
             <div className="w-10 h-10 rounded-xl bg-teal flex items-center justify-center">
               <Microscope className="w-6 h-6 text-charcoal" />
             </div>
-            <span className="font-serif text-2xl">PathAI Studio</span>
+            <span className="font-serif text-2xl">Mega</span>
           </Link>
           <CardTitle>Welcome back</CardTitle>
           <CardDescription>
