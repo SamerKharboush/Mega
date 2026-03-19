@@ -74,7 +74,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://pathai-studio.vercel.app",
+        "https://frontend-9hhvk5a0g-samerkharboushs-projects.vercel.app",
         "https://frontend-one-pink-50.vercel.app",
         "https://mega-wdvv.onrender.com",
         "https://mega-production-d392.up.railway.app",
