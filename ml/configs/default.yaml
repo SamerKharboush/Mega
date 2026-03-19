@@ -1,0 +1,24 @@
+# PathAI Studio ML Training Configuration
+
+data:
+  features_dir: "data/features"
+  labels_file: "data/labels.json"
+  train_split: 0.8
+
+model:
+  name: "AttentionMIL"
+  feature_dim: 1024
+  hidden_dim: 256
+  num_classes: 9
+  dropout: 0.25
+
+training:
+  epochs: 50
+  batch_size: 16
+  lr: 1e-4
+  weight_decay: 1e-4
+  device: "cuda"
+
+logging:
+  log_dir: "logs"
+  save_dir: "checkpoints"
