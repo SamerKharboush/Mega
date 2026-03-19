@@ -1,4 +1,4 @@
-# PathAI Studio
+# Mega
 
 > AI-powered digital pathology platform built on GigaPath + UNI 2 foundation models.
 
