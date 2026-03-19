@@ -4,56 +4,54 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/dashboard'
+  const token = searchParams.get('token')
+  const type = searchParams.get('type')
+  const next = searchParams.get('redirect') ?? searchParams.get('next') ?? '/dashboard'
 
-  if (code) {
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll()
-          },
-          setAll(cookiesToSet: { name: string; value: string; options?: any }[]) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
-            )
-          },
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
         },
-      }
-    )
+        setAll(cookiesToSet: { name: string; value: string; options?: any }[]) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          )
+        },
+      },
+    }
+  )
 
+  // Handle PKCE flow (code exchange)
+  if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
-      // Successful login - redirect to dashboard
       const response = NextResponse.redirect(`${origin}${next}`)
-
-      // Set the session cookies
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-
-      if (session) {
-        response.cookies.set('sb-access-token', session.access_token, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7, // 1 week
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-        })
-        response.cookies.set('sb-refresh-token', session.refresh_token, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 365, // 1 year
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-        })
-      }
-
       return response
     }
+
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  // Return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_error`)
+  // Handle token-based flow (magic link, email confirmation)
+  if (token && type) {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: token,
+      type: type as any,
+    })
+
+    if (!error) {
+      const response = NextResponse.redirect(`${origin}${next}`)
+      return response
+    }
+
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
+  }
+
+  // No valid parameters
+  return NextResponse.redirect(`${origin}/login?error=invalid_auth_request`)
 }
