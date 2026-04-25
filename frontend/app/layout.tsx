@@ -19,6 +19,7 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://frontend-one-pink-50.vercel.app'),
   title: 'Mega — AI Digital Pathology Platform',
   description: 'Upload whole-slide images and get AI-powered cancer subtype predictions, mutation scores, and attention heatmaps. Powered by GigaPath and UNI 2 foundation models.',
   keywords: ['digital pathology', 'AI pathology', 'GigaPath', 'UNI 2', 'whole-slide imaging', 'cancer detection'],

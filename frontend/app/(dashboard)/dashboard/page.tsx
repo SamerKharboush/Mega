@@ -41,6 +41,12 @@ const subscription = {
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
+      <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 mb-6">
+        <p className="text-amber-400 text-sm font-medium">
+          DEMO MODE — This page displays sample data. Connect your backend to see real results.
+        </p>
+      </div>
+
       {/* Welcome section */}
       <div className="flex items-center justify-between">
         <div>

@@ -49,7 +49,10 @@ export async function POST(request: NextRequest) {
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
 
-        if (userId) {
+        if (userId && subscriptionId) {
+          // Fetch the actual subscription to get the correct period end
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId as string)
+
           await supabase.from('subscriptions').upsert({
             user_id: userId,
             stripe_customer_id: customerId,
@@ -57,7 +60,7 @@ export async function POST(request: NextRequest) {
             plan: 'pro',
             slides_limit: 500,
             current_period_end: new Date(
-              (session.expires_at || Date.now() / 1000 + 2592000) * 1000
+              subscription.current_period_end * 1000
             ).toISOString(),
           })
         }

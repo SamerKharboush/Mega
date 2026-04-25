@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 import logging
 import sys
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -16,6 +17,9 @@ logger = logging.getLogger(__name__)
 logger.info("Starting application initialization...")
 
 from app.config import settings
+
+# Track router load errors for health check
+_router_load_error: str | None = None
 
 # Initialize Sentry only if DSN is provided
 if settings.sentry_dsn:
@@ -35,6 +39,7 @@ if settings.sentry_dsn:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    global _router_load_error
     # Startup
     logger.info(f"Starting {settings.app_name}...")
     logger.info(f"Debug mode: {settings.debug}")
@@ -49,10 +54,10 @@ async def lifespan(app: FastAPI):
         app.include_router(webhooks.router, prefix="/api/webhooks", tags=["webhooks"])
         logger.info("Routers loaded successfully")
     except Exception as e:
+        _router_load_error = str(e)
         logger.error(f"Failed to load routers: {e}")
         import traceback
         traceback.print_exc()
-        # Don't raise - let the app start anyway for healthcheck
 
     yield
 
@@ -69,16 +74,15 @@ app = FastAPI(
     redoc_url="/redoc" if settings.debug else None,
 )
 
-# CORS middleware
+# CORS middleware - configurable via CORS_ORIGINS env var (comma-separated)
+cors_origins = os.environ.get("CORS_ORIGINS", "").split(",") if os.environ.get("CORS_ORIGINS") else [
+    "http://localhost:3000",
+    "https://frontend-one-pink-50.vercel.app",
+    "https://mega-production-d392.up.railway.app",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://frontend-9hhvk5a0g-samerkharboushs-projects.vercel.app",
-        "https://frontend-one-pink-50.vercel.app",
-        "https://mega-wdvv.onrender.com",
-        "https://mega-production-d392.up.railway.app",
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -101,9 +105,14 @@ async def root():
     return {"message": "Mega API", "docs": "/docs", "health": "/health"}
 
 
-# Health check - must work even if routers fail to load
+# Health check - reports degraded state if routers failed to load
 @app.get("/health")
 async def health_check():
+    if _router_load_error:
+        return JSONResponse(
+            status_code=503,
+            content={"status": "degraded", "version": "1.0.0", "error": _router_load_error},
+        )
     return {"status": "healthy", "version": "1.0.0"}
 
 

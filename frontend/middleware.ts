@@ -37,13 +37,25 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protected routes
-  const isDashboardRoute = request.nextUrl.pathname.startsWith('/dashboard')
+  // Protected routes - all authenticated pages and API routes
+  const protectedPrefixes = [
+    '/dashboard',
+    '/slides',
+    '/analyses',
+    '/reports',
+    '/api-keys',
+    '/settings',
+  ]
+  const isProtectedPage = protectedPrefixes.some(
+    (prefix) =>
+      request.nextUrl.pathname === prefix ||
+      request.nextUrl.pathname.startsWith(prefix + '/')
+  )
   const isApiRoute = request.nextUrl.pathname.startsWith('/api') &&
     !request.nextUrl.pathname.startsWith('/api/auth') &&
     !request.nextUrl.pathname.startsWith('/api/webhooks')
 
-  if ((isDashboardRoute || isApiRoute) && !user) {
+  if ((isProtectedPage || isApiRoute) && !user) {
     // Redirect to login - preserve cookies from supabaseResponse
     const url = request.nextUrl.clone()
     url.pathname = '/login'
