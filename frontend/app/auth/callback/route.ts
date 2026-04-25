@@ -8,6 +8,11 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type')
   const next = searchParams.get('redirect') ?? searchParams.get('next') ?? '/dashboard'
 
+  // Create response that will be updated with cookies
+  let response = NextResponse.next({
+    request,
+  })
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -17,8 +22,13 @@ export async function GET(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet: { name: string; value: string; options?: any }[]) {
+          // Set cookies on request for auth operations
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
+          )
+          // Set cookies on response for browser
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
           )
         },
       },
@@ -30,8 +40,13 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
-      const response = NextResponse.redirect(`${origin}${next}`)
-      return response
+      // Redirect with cookies properly set
+      const redirectResponse = NextResponse.redirect(`${origin}${next}`)
+      // Copy cookies from response to redirect response
+      response.cookies.getAll().forEach((cookie) => {
+        redirectResponse.cookies.set(cookie.name, cookie.value)
+      })
+      return redirectResponse
     }
 
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
@@ -45,8 +60,12 @@ export async function GET(request: NextRequest) {
     })
 
     if (!error) {
-      const response = NextResponse.redirect(`${origin}${next}`)
-      return response
+      // Redirect with cookies properly set
+      const redirectResponse = NextResponse.redirect(`${origin}${next}`)
+      response.cookies.getAll().forEach((cookie) => {
+        redirectResponse.cookies.set(cookie.name, cookie.value)
+      })
+      return redirectResponse
     }
 
     return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)

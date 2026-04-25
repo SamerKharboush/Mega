@@ -3,7 +3,7 @@
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -27,13 +27,16 @@ function LoginForm() {
     setError(null)
 
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (error) throw error
-      router.push(redirect)
+
+      // Hard redirect so middleware picks up the new session cookies
+      window.location.href = redirect
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed')
     } finally {
@@ -51,6 +54,7 @@ function LoginForm() {
     setError(null)
 
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -132,7 +136,7 @@ function LoginForm() {
               <p className="text-sm text-red-500">{error}</p>
             )}
             <Button type="submit" className="w-full bg-teal text-charcoal hover:bg-teal-600" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 h-4 animate-spin" />}
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign in
             </Button>
           </form>

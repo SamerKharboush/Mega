@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase'
 import {
   Upload,
   File,
@@ -58,6 +58,7 @@ export default function SlideUploader() {
 
   const uploadFile = async (uploadingFile: UploadingFile) => {
     const { file } = uploadingFile
+    const supabase = createClient()
 
     // Update status to uploading
     setFiles(prev =>
