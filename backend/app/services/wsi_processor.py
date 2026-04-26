@@ -124,7 +124,7 @@ class WSIProcessor:
 
     async def process(self, local_path: str) -> dict:
         """Full processing pipeline."""
-        output_dir = os.path.join(settings.storage_bucket, "processed", self.slide_id)
+        output_dir = os.path.join(settings.processed_data_dir, self.slide_id)
 
         # Get metadata
         metadata = await self.get_slide_metadata(local_path)

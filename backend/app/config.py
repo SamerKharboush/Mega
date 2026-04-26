@@ -35,6 +35,7 @@ class Settings(BaseSettings):
 
     # Storage
     storage_bucket: str = "slides"
+    processed_data_dir: str = "/data/processed"
 
     # Model versions
     gigapath_version: str = "v1.0"

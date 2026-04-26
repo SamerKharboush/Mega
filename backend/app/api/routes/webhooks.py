@@ -1,6 +1,10 @@
+import logging
 from fastapi import APIRouter, Request, HTTPException, Header
 from typing import Optional
 import json
+
+import logging
+logger = logging.getLogger(__name__)
 
 from app.config import settings
 
@@ -25,12 +29,12 @@ async def modal_webhook(
         results = body.get("results")
 
         # In production, update Supabase
-        print(f"Analysis {analysis_id} complete: {results}")
+        logger.info(f"Analysis {analysis_id} complete: {results}")
 
     elif event_type == "analysis.error":
         analysis_id = body.get("analysis_id")
         error = body.get("error")
-        print(f"Analysis {analysis_id} failed: {error}")
+        logger.error(f"Analysis {analysis_id} failed: {error}")
 
     return {"status": "received"}
 

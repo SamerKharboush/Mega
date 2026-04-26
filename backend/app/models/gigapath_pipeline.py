@@ -9,6 +9,9 @@ import numpy as np
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 import asyncio
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class GigaPathPipeline:
@@ -47,9 +50,9 @@ class GigaPathPipeline:
         # Placeholder for demo
         self.tile_encoder = nn.Identity()
         self.slide_encoder = nn.Identity()
-        self.classifier = nn.Linear(768, 9)  # 9 cancer subtypes
+        self.classifier = nn.Linear(1024, 9)  # UNI outputs 1024-dim  # 9 cancer subtypes
 
-        print(f"Loaded GigaPath {self.model_version}")
+        logger.info(f"Loaded GigaPath {self.model_version}")
 
     async def extract_tile_features(
         self,

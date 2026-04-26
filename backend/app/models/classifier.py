@@ -1,3 +1,7 @@
+import logging
+
+import logging
+logger = logging.getLogger(__name__)
 """
 Classifier training module for fine-tuning on custom datasets.
 """
@@ -176,7 +180,7 @@ class Trainer:
             train_metrics = self.train_epoch()
             val_metrics = self.validate()
 
-            print(f"Epoch {epoch + 1}/{self.epochs}")
+            logger.info(f"Epoch {epoch + 1}/{self.epochs}")
             print(f"  Train Loss: {train_metrics['loss']:.4f}, Acc: {train_metrics['accuracy']:.4f}")
             print(f"  Val Loss: {val_metrics['loss']:.4f}, Acc: {val_metrics['accuracy']:.4f}")
 

@@ -1,3 +1,5 @@
+import logging
+logger = logging.getLogger(__name__)
 """
 UNI 2 Pipeline
 Harvard's pathology foundation model for tile-level feature extraction.
@@ -45,7 +47,7 @@ class UNIPipeline:
 
         # Placeholder
         self.model = nn.Identity()
-        print(f"Loaded UNI {self.model_version}")
+        logger.info(f"Loaded UNI {self.model_version}")
 
     async def preprocess_tile(self, tile: np.ndarray) -> torch.Tensor:
         """

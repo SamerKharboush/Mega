@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   lint-frontend:
@@ -32,6 +32,9 @@ jobs:
       - name: Type check
         run: npm run type-check
 
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
   test-frontend:
     runs-on: ubuntu-latest
     needs: lint-frontend
@@ -54,7 +57,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-        continue-on-error: true
 
   lint-backend:
     runs-on: ubuntu-latest
@@ -82,7 +84,6 @@ jobs:
 
       - name: Run MyPy
         run: mypy app --ignore-missing-imports
-        continue-on-error: true
 
   test-backend:
     runs-on: ubuntu-latest
@@ -108,7 +109,6 @@ jobs:
 
       - name: Run tests
         run: pytest app/tests -v
-        continue-on-error: true
 
   build-check:
     runs-on: ubuntu-latest

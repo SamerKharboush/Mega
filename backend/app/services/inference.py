@@ -1,3 +1,4 @@
+import os
 """
 Inference Service
 Orchestrates GigaPath and UNI 2 pipelines for pathology analysis.
@@ -41,7 +42,7 @@ class InferenceService:
         await self.load_models()
 
         # Get tile features using UNI
-        features = await self.uni.extract_features(tile_dir)
+        features = await self.uni.extract_features_from_dir(tile_dir)
 
         # Run GigaPath subtyping
         predictions = await self.gigapath.predict_subtype(features)
@@ -70,7 +71,7 @@ class InferenceService:
         await self.load_models()
 
         # Get tile features
-        features = await self.uni.extract_features(tile_dir)
+        features = await self.uni.extract_features_from_dir(tile_dir)
 
         # Predict mutations
         mutation_scores = await self.gigapath.predict_mutations(features, genes)
@@ -91,7 +92,7 @@ class InferenceService:
         """
         await self.load_models()
 
-        features = await self.uni.extract_features(tile_dir)
+        features = await self.uni.extract_features_from_dir(tile_dir)
         prognosis = await self.gigapath.predict_survival(features)
 
         return {
@@ -112,7 +113,7 @@ class InferenceService:
         """
         await self.load_models()
 
-        features = await self.uni.extract_features(tile_dir)
+        features = await self.uni.extract_features_from_dir(tile_dir)
         quantification = await self.gigapath.quantify_ihc(features, marker)
 
         return {
@@ -154,7 +155,7 @@ async def run_analysis_task(analysis_id: str):
         # Run inference
         service = InferenceService()
 
-        tile_dir = f"/data/processed/{slide_id}/inference"
+        tile_dir = os.path.join(settings.processed_data_dir, slide_id, "inference")
 
         if task == "subtype":
             result = await service.run_subtyping(tile_dir, slide_id)
